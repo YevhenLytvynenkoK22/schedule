@@ -3,9 +3,9 @@ import {COLORS} from "../constans/ui";
 
 
 
-const ButtonDay = ({title})=>{
+const ButtonDay = ({title, setValue})=>{
     return(
-        <TouchableOpacity style={styles.customButton} onPress={() => {}}>
+        <TouchableOpacity style={styles.customButton} onPress={()=>setValue(title)}>
             <Text style={styles.buttonText}>{title}</Text>
         </TouchableOpacity>
 

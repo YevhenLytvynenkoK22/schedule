@@ -4,9 +4,16 @@ import {fetchSchedule} from './parser'
 import { Picker } from "@react-native-picker/picker";
 import {COLORS} from "./constans/ui"
 import ButtonDay from "./components/ButtonDay.jsx";
+function getDay(){
+    let day={
+      group:"",
+
+    }
+}
 export default function App() {
   const [schedule, setSchedule] = useState([]);
-  const [cours, setSelectedValue] = useState("");
+  const [cours, setSelectedCours] = useState("");
+  const [day, setSelectedDay] = useState("");
   useEffect(() => {
     (async () => {
       const data = await fetchSchedule(
@@ -25,17 +32,27 @@ let groups = schedule[3]
     }, {})
   : {};
 
-  let text = "Понеділок\n";
+  let day_i = {
+    "Пн":4,
+    "Вт": 19,
+    "Ср": 34,
+    "Чт": 49,
+    "Пт": 64,
+    "Сб": 79,
 
-  let days = ["Вівторок","Середа","Четвер", "П'ятниця", "Субота"];
-  let day_i = 0;
+  }
+
+  let d = 15;
+  let start = 4
+  let days = ["Понеділок","Вівторок","Середа","Четвер", "П'ятниця", "Субота"];
   let cours_j = groups[cours];
+  let index = day_i[day];
+  let text = day;
+  let days_index = 0;
 
-
-  for(let i = 4; i<schedule.length;i++){
+  for(let i = index; i<index+15;i++){
     if(schedule[i][cours_j]===undefined){
-      text+=days[day_i++]+'\n';
-   
+      text+=days[days_index++]+'\n';
     }
     else{
       text+= schedule[i][cours_j]+'\n';
@@ -44,27 +61,27 @@ let groups = schedule[3]
 
   return (
       <View style={styles.container}>
-   <Picker
-  style={styles.picker}
-  selectedValue={cours}
-  onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
->
-  {Object.entries(groups).map(([course, columnIndex]) => (
-    <Picker.Item
-      key={columnIndex}
-      label={course}
-      value={course}
-    />
-  ))}
-</Picker>
-  <View style = {{flexDirection:'row'}}>
-    <ButtonDay title={"Пн"}/>
-    <ButtonDay title={"Вт"}/>
-    <ButtonDay title={"Ср"}/>
-    <ButtonDay title={"Чт"}/>
-    <ButtonDay title={"Пт"}/>
-    <ButtonDay title={"Сб"}/>
-  </View>
+          <Picker
+          style={styles.picker}
+          selectedValue={cours}
+          onValueChange={(itemValue, itemIndex) => setSelectedCours(itemValue)}
+        >
+          {Object.entries(groups).map(([course, columnIndex]) => (
+            <Picker.Item
+              key={columnIndex}
+              label={course}
+              value={course}
+            />
+          ))}
+        </Picker>
+        <View style = {{flexDirection:'row'}}>
+          <ButtonDay title={"Пн"} setValue={()=>setSelectedDay("Пн")} />
+          <ButtonDay title={"Вт"} setValue={()=>setSelectedDay("Вт")}/>
+          <ButtonDay title={"Ср"} setValue={()=>setSelectedDay("Ср")}/>
+          <ButtonDay title={"Чт"} setValue={()=>setSelectedDay("Чт")}/>
+          <ButtonDay title={"Пт"} setValue={()=>setSelectedDay("Пт")}/>
+          <ButtonDay title={"Сб"} setValue={()=>setSelectedDay("Сб")}/>
+        </View>
         <ScrollView>
           <Text>{text}</Text>
         </ScrollView>
